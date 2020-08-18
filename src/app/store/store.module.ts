@@ -6,6 +6,7 @@ import { CartSummaryComponent } from './cartsummary.component';
 import { CartDetailComponent } from './cartDetail.component';
 import { CheckoutComponent } from './checkout.component';
 import { RouterModule } from '@angular/router';
+import { FormsModule } from '@angular/forms';
 
 @NgModule({
     declarations: [
@@ -15,7 +16,12 @@ import { RouterModule } from '@angular/router';
         CheckoutComponent
     ],
     providers: [],
-    imports: [ModelModule, BrowserModule, RouterModule],
+    imports: [
+        ModelModule, 
+        BrowserModule, 
+        RouterModule,
+        FormsModule
+    ],
     exports: [
         StoreComponent,
         CartDetailComponent,
