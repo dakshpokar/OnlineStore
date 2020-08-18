@@ -1,0 +1,75 @@
+<nav class="navbar navbar-expand-lg navbar-dark bg-dark">
+    <a class="navbar-brand" href="/">ACI Store</a>
+    <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+      <span class="navbar-toggler-icon"></span>
+    </button>
+    <div class="collapse navbar-collapse" id="navbarNav">
+      <ul class="navbar-nav">
+        <li class="nav-item active">
+          <a class="nav-link" href="#">Products <span class="sr-only">(current)</span></a>
+        </li>
+      </ul>
+      <form class="form-inline my-2 my-lg-0 ml-auto mr-auto">
+        <input class="form-control mr-2" type="search" placeholder="Search Products" aria-label="Search">
+        <button class="btn btn-outline-primary my-2 my-sm-0" type="submit">Search</button>
+      </form>
+      <cart-summary></cart-summary>
+    </div>
+  </nav>
+<div class="container-fluid">
+    <div class="row">
+        <div class="col-2 p-2">
+            <button class="btn btn-outline-primary w-100 m-1" [class.active] = "selectedCategory == null" (click)="changedCategory()">Home</button>
+            <button *ngFor="let category of categories" [class.active] = "category == selectedCategory" class="btn btn-outline-primary w-100 m-1" (click)="changedCategory(category)">{{ category }}</button>
+            <div class="w-100 text-center form-inline m-2">
+              <h6 class="mr-3">Products Per Page:</h6>
+              <select class="form-control" [value]="productsPerPage" (change)="changePageSize($event.target.value)">
+                <option value="3">3</option>
+                <option value="6">6</option>
+                <option value="9">9</option>
+                <option value="12">12</option>
+              </select>
+            </div>
+            <div class="w-100 text-center form-inline m-2">
+              <h6 class="mr-3 align-middle">View Type: <a href="javascript:;" (click)="toggleView('grid')" style="text-decoration: none"><i class="fas fa-th"></i> Grid</a> | 
+              <a href="javascript:;" style="text-decoration: none" (click)="toggleView('list')"><i class="fas fa-list"></i> List</a></h6>
+            </div> 
+        </div>
+        <div class="col-10 p-2">
+            <h4>Showing {{ products.length }} Products</h4>
+            <ng-template [ngIf]="grid">
+            <div class="card-columns">
+                <div class="card" *ngFor="let product of products">
+                  <img class="card-img-top" src={{product.url}} alt="Card image cap">
+                  <div class="card-body">
+                    <h5 class="card-title">{{product.name}}</h5>
+                    <p class="card-text">{{ product.description}}</p>
+                    <a href="javascript:;" class="btn btn-primary">Buy {{ product.price | currency: 'INR'}}</a>
+                    <a href="javascript:;" class="btn btn-primary float-right" (click)="addProductToCart(product)"><i class="fas fa-shopping-cart"></i> Add to Cart</a>
+                  </div>
+                </div>
+              </div>
+            </ng-template>
+            <ng-template [ngIf]="!grid">
+              <div class="card bg-light p-1 m-2" *ngFor="let product of products">
+                <div class="row">
+                  <div class="col-2">
+                    <img class="card-img-top" height="100px" width="50px" src={{product.url}} alt="Card image cap">
+                  </div>
+                  <div class="col-10">
+                    <h4 class="p-1"> {{ product.name }} <span class="badge badge-pill badge-primary float-right">{{ product.price | currency:'INR' }}</span></h4>
+                    <div class="card-text bg-light p-1">
+                      {{ product.description }}
+                      <a href="javascript:;" class="btn btn-success float-right" (click)="addProductToCart(product)"><i class="fas fa-shopping-cart"></i> Add to Cart</a>
+                  </div>
+                  
+                  </div>
+              </div>
+              </div>
+              </ng-template>
+              <div class="btn-group center-block p-2" style="text-align: center;">
+                <button *ngFor="let page of pageNumbers" (click)="changePage(page)" class="btn btn-outline-primary" [class.active]="page == selectedPage"> {{ page }} </button>
+              </div>
+            </div>
+    </div> 
+</div>
